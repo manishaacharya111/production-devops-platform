@@ -29,7 +29,7 @@ jobs:
       run: bandit -r app/app.py -f json -o bandit_report.json || true
 
     - name: Upload Bandit report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: bandit-report
         json: bandit_report.json
