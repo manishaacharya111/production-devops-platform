@@ -29,7 +29,7 @@ jobs:
       run: bandit -r app/app.py -f json -o bandit_report.json || true
 
     - name: Upload Bandit report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: bandit-report
         json: bandit_report.json
@@ -45,10 +45,10 @@ jobs:
         python-version: '3.11'
 
     - name: Install dependencies
-      run: pip install -r app/requirements.txt
+      run: pip install -r app/requirements.txt && pip install pytest
 
     - name: Run tests
-      run: python -m pytest app/test_app.py --maxfail=1 -v
+      run: python -m pytest app/test_app.py -v
 
   build-and-push:
     name: Build,Scan and Push Docker Image
