@@ -1,0 +1,6 @@
+apiVersion: v2 # Helm 3 format. Helm 2 used v1. Always use v2.
+name: flask-app # the chart name. Used when installing: helm install flask-app ./helm/flask-app.
+description: Production DevOps Platform Flask Application
+type: application
+version: 0.1.0 #  the chart version. Increment this when you change the chart structure itself
+appVersion: 1.0.0. #  the application version &the actual image tag comes from values.yaml.

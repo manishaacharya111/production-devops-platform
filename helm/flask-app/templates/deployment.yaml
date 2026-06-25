@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: {{.Release.Name}}-flask-app
+    labels:
+        app: {{.Release.Name}}-flask-app
+spec:
+    replicas: {{.Values.replicaCount}}
+    selector:
+        matchLabels:
+            app: {{.Release.Name}}-flask-app
+    template:
+        metadata:
+            labels:
+                app: {{.Release.Name}}-flask-app
+        spec:
+            containers:
+                - name: flask-app
+                  image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
+                  imagePullPolicy: {{.Values.image.pullPolicy}}
+                  ports:
+                    - containerPort: {{.Values.service.targetPort}}
+                  resources:
+                    requests:
+                      memory: {{.Values.resources.requests.memory}}
+                      cpu: {{.Values.resources.requests.cpu}}
+                    limits:
+                      memory: {{.Values.resources.limits.memory}}
+                      cpu: {{.Values.resources.limits.cpu}}
+                  livenessProbe:
+                    httpGet:
+                      path: {{.Values.livenessProbe.path}}
+                      port: {{.Values.service.targetPort}}
+                    initialDelaySeconds: {{.Values.livenessProbe.initialDelaySeconds}}  
+                    periodSeconds: {{.Values.livenessProbe.periodSeconds}}
+                  readinessProbe:
+                    httpGet:
+                      path: {{.Values.readinessProbe.path}}
+                      port: {{.Values.service.targetPort}}
+                    initialDelaySeconds: {{.Values.readinessProbe.initialDelaySeconds}}
+                    periodSeconds: {{.Values.readinessProbe.periodSeconds}}
