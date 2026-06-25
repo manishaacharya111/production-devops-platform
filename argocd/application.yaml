@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: flask-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    # tells ArgoCD where to find the Helm chart. repoURL is your GitHub repo.
+    repoURL: https://github.com/manishaacharya111/production-devops-platform
+    targetRevision: HEAD # means always use the latest commit on main.
+    path: helm/flask-app
+    helm:
+      valueFiles:
+      - values.yaml
+  destination:
+    # tells ArgoCD where to deploy. https://kubernetes.default.svc means the same cluster ArgoCD is running in.
+    server: https://kubernetes.default.svc
+    namespace: default # is where your Flask app will live.
+  syncPolicy:
+    # this is the GitOps magic. Without this you'd have to click "Sync" in the UI every time. 
+    automated:
+      prune: true # if you delete a resource from Git, ArgoCD deletes it from the cluster too.
+      selfHeal: true # if someone manually changes something in the cluster with kubectl, ArgoCD reverts it back to match Git within 3 minutes.
+    syncOptions:
+    - CreateNamespace=true
