@@ -19,7 +19,7 @@ spec:
          port: 5000
 
     - from:
-          - namespaceSelector:
+        - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: monitoring
       ports:
