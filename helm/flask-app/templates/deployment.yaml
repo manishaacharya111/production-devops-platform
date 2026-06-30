@@ -39,3 +39,4 @@ spec:
                       port: {{.Values.service.targetPort}}
                     initialDelaySeconds: {{.Values.readinessProbe.initialDelaySeconds}}
                     periodSeconds: {{.Values.readinessProbe.periodSeconds}}
+
