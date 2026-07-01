@@ -153,3 +153,26 @@ kubectl get secret -n monitoring alertmanager-kube-prometheus-stack-alertmanager
 kubectl logs -n monitoring alertmanager-kube-prometheus-stack-alertmanager-0 \
   -c alertmanager --tail=50 | grep -i slack
 ```
+
+Policy Enforcement (Kyverno)
+
+This project uses Kyverno for Kubernetes admission control —
+policies are enforced at deploy time, before objects reach the cluster, rather than
+relying on runtime monitoring to catch misconfigurations after the fact.
+
+Policies (policies/):
+
+
+require-resource-limits.yaml — every container must declare CPU and memory limits
+disallow-privileged.yaml — no container may run with privileged: true
+
+
+Both policies run in Enforce mode: non-compliant resources are rejected at admission,
+not just flagged.
+
+bashkubectl apply -f policies/
+
+To verify enforcement:
+
+bashkubectl get validatingwebhookconfigurations | grep kyverno-resource
+# rule count should be > 0 once policies are applied
